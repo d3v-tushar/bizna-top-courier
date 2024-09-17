@@ -12,6 +12,8 @@ import { getUser } from '@/lib/auth/dal';
 import { NotificationForm } from '@/components/account/notification-form';
 import { BackButton } from '@/components/shared/back-button';
 
+export const revalidate = 0;
+
 export default async function AccountUpdatePage() {
   const user = await getUser();
   if (!user) {
