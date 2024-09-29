@@ -18,12 +18,12 @@ export async function POST(request: Request) {
       const [adminUser] = await tx
         .insert(users)
         .values({
-          firstName: 'Lemon',
-          lastName: 'Bhuiyan',
+          firstName: 'Root',
+          lastName: 'Admin',
           phone: '01728712523',
-          email: 'bhuiyan@biznatop.com',
+          email: 'md.mohsinahmed@outlook.com',
           passwordHash:
-            '$2y$10$VquMn/vBIfaA1oGIc2ngV.duzVTPVO/z1k4y.4NcKKZbh7ctdFZjW',
+            '$2y$10$/SOxNQ/rt0utntcaPF366O02.OkVKatvzmNg3wZahAZooz8k7/SC6',
           role: 'ADMIN',
         })
         .returning({ id: users.id });

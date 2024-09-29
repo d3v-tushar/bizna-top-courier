@@ -98,6 +98,8 @@ export async function signin(state: AuthFormState, formData: FormData) {
       existingUser.passwordHash,
     ); // Replace with proper password verification
 
+    console.log(passwordMatch, validatedFields.data.password);
+
     if (!passwordMatch) {
       return {
         errors: { password: ['Incorrect password'] },
