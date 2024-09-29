@@ -70,6 +70,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 's3.biznatop.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.biznatop.com',
+      },
     ],
   },
   output: 'standalone',

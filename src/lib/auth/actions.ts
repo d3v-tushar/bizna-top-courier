@@ -4,12 +4,13 @@ import { AuthFormState } from './definitions';
 import { createSession, decrypt, deleteSession } from './session';
 import { SigninFormSchema, SignupFormSchema } from './validations';
 
-import { hash, compare } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { users } from '../database/schema';
 import db from '../database';
 import { cookies } from 'next/headers';
 import { optimizeImage, uploadToS3 } from '../storage';
+import { eq } from 'drizzle-orm';
 
 export async function signup(state: AuthFormState, formData: FormData) {
   // Validate form fields
@@ -36,7 +37,7 @@ export async function signup(state: AuthFormState, formData: FormData) {
             validatedFields.data?.image.type,
           )
         : null,
-      hash(validatedFields.data?.password, 10),
+      bcrypt.hash(validatedFields.data?.password, 10),
     ]);
 
     // Insert into User table
@@ -85,20 +86,21 @@ export async function signin(state: AuthFormState, formData: FormData) {
       where: (users, { eq }) => eq(users.email, validatedFields.data.email),
     });
 
+    console.log('existingUser', existingUser);
+
     if (!existingUser) {
       return {
         errors: { email: ['No user found with this email address'] },
       };
     }
 
-    // Verify the password (you should hash and compare the hashed passwords in production)
     // 3. Compare the user's password with the hashed password in the database
-    const passwordMatch = await compare(
+    const passwordMatch = await bcrypt.compare(
       validatedFields.data.password,
-      existingUser.passwordHash,
+      existingUser.passwordHash.trim(),
     ); // Replace with proper password verification
 
-    console.log(passwordMatch, validatedFields.data.password);
+    console.log(passwordMatch, validatedFields.data);
 
     if (!passwordMatch) {
       return {
