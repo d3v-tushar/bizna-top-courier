@@ -66,6 +66,7 @@ export function PromoForm() {
               placeholder="7%"
               name="value"
               type="number"
+              min="10"
               max="25"
               required
             />

@@ -22,7 +22,7 @@ export const PartySchema = z.object({
   phone: z
     .string()
     .min(10, { message: 'Phone number must be at least 10 characters long.' })
-    .max(11, { message: 'Phone number must be at most 15 characters long.' })
+    .max(11, { message: 'Phone number must be at most 11 characters long.' })
     .regex(/^\d{10,11}$/, 'Please enter a valid phone number')
     .trim(),
   email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
@@ -326,6 +326,6 @@ export const PackageLogSchema = z.object({
   barcode: z.string().trim().min(12, 'Barcode is required'),
   status: z.enum(PACKAGE_STATUS),
   label: z.enum(PACKAGE_LABEL),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });

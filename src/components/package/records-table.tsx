@@ -68,7 +68,8 @@ export function RecordsTable() {
                       {log.label}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {format(new Date(log?.updatedAt), 'PPpp')}
+                      {log?.updatedAt &&
+                        format(new Date(log?.updatedAt), 'PPpp')}
                     </TableCell>
                   </TableRow>
                 ))}

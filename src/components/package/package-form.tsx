@@ -199,44 +199,6 @@ export function PackageForm({
 
   console.log(form.formState.errors);
 
-  // function getcalculateTotal() {
-  //   const lineItems = form.watch('lineItems');
-  //   const discountAmount =
-  //     parseFloat(form.watch('package.discountAmount')) || 0;
-  //   const promoValue = form.getValues('package.promoValue');
-
-  //   const totalBeforeDiscount = lineItems.reduce((total, item) => {
-  //     const itemTotal = Number(item.unitPrice) * Number(item.quantity);
-  //     return total + itemTotal;
-  //   }, 0);
-
-  //   let finalTotal;
-
-  //   if (promoValue) {
-  //     // If promoValue is present, assume it's a percentage and apply it
-  //     const promoPercentage = parseFloat(promoValue) / 100;
-  //     finalTotal = totalBeforeDiscount * (1 - promoPercentage);
-  //   } else {
-  //     // If no promoValue, apply the discountAmount
-  //     finalTotal = Math.max(0, totalBeforeDiscount - discountAmount);
-  //   }
-
-  //   return finalTotal.toFixed(2);
-  // }
-
-  // function getcalculateTotal() {
-  //   const lineItems = form.watch('lineItems');
-  //   const discountAmount =
-  //     parseFloat(form.watch('package.discountAmount')) || 0;
-  //   const promoValue = form.getValues('package.promoValue');
-  //   const totalBeforeDiscount = lineItems.reduce((total, item) => {
-  //     const itemTotal = Number(item.unitPrice) * Number(item.quantity);
-  //     return total + itemTotal;
-  //   }, 0);
-  //   const finalTotal = Math.max(0, totalBeforeDiscount - discountAmount);
-  //   return finalTotal.toFixed(2);
-  // }
-
   return (
     <Card className="mt-4 rounded-md shadow-none">
       <CardHeader className="border-b">
@@ -244,6 +206,13 @@ export function PackageForm({
         <CardDescription>
           Fill in the form to create a new package
         </CardDescription>
+        <span>
+          {Object.values(form.formState.errors).map((error, index) => (
+            <span key={index} className="text-sm text-red-400">
+              {error.message}
+            </span>
+          ))}
+        </span>
       </CardHeader>
       <CardContent className="mt-6">
         <Form {...form}>
@@ -1199,6 +1168,10 @@ export function PackageForm({
                     >
                       {loading ? 'Applying...' : 'Apply'}
                     </Button>
+
+                    <span className="col-span-full text-sm text-red-500">
+                      {form.formState.errors.package?.promoValue?.message}
+                    </span>
                   </div>
                 )}
 

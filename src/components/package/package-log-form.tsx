@@ -26,7 +26,7 @@ import { format, sub } from 'date-fns';
 import { LogRecordStore } from './records-table';
 import { useStore } from 'zustand';
 import { Button } from '../ui/button';
-import { ReloadIcon, ResetIcon } from '@radix-ui/react-icons';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 export type PackageLogRecords = z.infer<typeof PackageLogSchema>;
 
@@ -99,10 +99,12 @@ export function PackageLogForm() {
 
   const handleBarcodeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     form.setValue('barcode', e.target.value);
-    if (e.target.value.length >= 12) {
+    if (e.target.value.length >= 10) {
       form.handleSubmit(onSubmit)();
     }
   };
+
+  console.log('log from state', form.formState.errors);
 
   return (
     <Form {...form}>
