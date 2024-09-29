@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface useSidebarToggleStore {
   isOpen: boolean;
@@ -15,8 +15,8 @@ export const useSidebarToggle = create(
       },
     }),
     {
-      name: "sidebarOpen",
+      name: 'sidebarOpen',
       storage: createJSONStorage(() => localStorage),
-    }
-  )
+    },
+  ),
 );

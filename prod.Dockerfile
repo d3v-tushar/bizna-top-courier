@@ -4,6 +4,7 @@ FROM node:20-alpine AS base
 # Install dependencies only when needed
 FROM base AS builder
 
+
 # Install dependencies for node-canvas
 RUN apk add --no-cache \
     python3 \
@@ -16,6 +17,9 @@ RUN apk add --no-cache \
 
 # Set working directory inside the container
 WORKDIR /app
+
+# Debug: Print DATABASE_URL
+RUN echo "DATABASE_URL at the start of build: ${DATABASE_URL}"
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
@@ -36,33 +40,11 @@ COPY postcss.config.mjs .
 COPY drizzle.config.ts .
 
 # Set environment variables required at build time
-ENV NODE_ENV=production
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
-ARG SESSION_SECRET
-ENV SESSION_SECRET=${SESSION_SECRET}
-ARG DOMAIN
-ENV DOMAIN=${DOMAIN}
-ARG S3_REGION
-ENV S3_REGION=${S3_REGION}
-ARG S3_ENDPOINT
-ENV S3_ENDPOINT=${S3_ENDPOINT}
-ARG S3_ACCESS_KEY_ID
-ENV S3_ACCESS_KEY_ID=${S3_ACCESS_KEY_ID}
-ARG S3_SECRET_ACCESS_KEY
-ENV S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}
-ARG S3_BUCKET_NAME
-ENV S3_BUCKET_NAME=${S3_BUCKET_NAME}
-ARG S3_ENDPOINT_EU
-ENV S3_ENDPOINT_EU=${S3_ENDPOINT_EU}
-ARG S3_HOSTNAME
-ENV S3_HOSTNAME=${S3_HOSTNAME}
-ARG NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-ENV NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY=${NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY}
-ARG WEB_PUSH_PRIVATE_KEY
-ENV WEB_PUSH_PRIVATE_KEY=${WEB_PUSH_PRIVATE_KEY}
-ARG WEB_PUSH_EMAIL
-ENV WEB_PUSH_EMAIL=${WEB_PUSH_EMAIL}
+
+# Debug: Print DATABASE_URL
+RUN echo "DATABASE_URL at the start of build: ${DATABASE_URL}"
 
 # # Run Drizzle ORM commands
 RUN yarn db:generate && yarn db:migrate

@@ -1,6 +1,6 @@
 import DataCard from '@/components/overview/data-card';
 import RevenueOverview from '@/components/overview/revenue-overview';
-import { DollarSign } from 'lucide-react';
+import { Banknote, DollarSign, Euro, Package } from 'lucide-react';
 import { verifySession } from '@/lib/auth/dal';
 
 import RecentPackages from '@/components/overview/recent-packages';
@@ -8,10 +8,8 @@ import { unstable_cache as NextCache } from 'next/cache';
 import {
   getWeeklyRevenue,
   getMonthlyRevenue,
-  getWeeklyNetProfit,
-  getMonthlyNetProfit,
-  getTotalPackagesCreatedThisMonth,
-  getNetProfilt,
+  getPackageCount,
+  getNetProfit,
 } from '@/lib/overview/overview.query';
 
 export const revalidate = 60; // 1 minutes
@@ -27,48 +25,16 @@ export default async function DashboardPage() {
     revalidate: 30,
   });
 
-  const weeklyNetProfit = NextCache(getWeeklyNetProfit, ['weekly-net-profit'], {
-    tags: ['weekly-net-profit'],
+  const getTotalPackageCount = NextCache(getPackageCount, ['total-packages'], {
+    tags: ['total-packages'],
     revalidate: 30,
   });
 
-  const monthlyNetProfit = NextCache(
-    getMonthlyNetProfit,
-    ['monthly-net-profit'],
-    {
-      tags: ['monthly-net-profit'],
-      revalidate: 30,
-    },
-  );
-
-  const totalPackagesMonth = NextCache(
-    getTotalPackagesCreatedThisMonth,
-    ['total-packages'],
-    {
-      tags: ['total-packages'],
-      revalidate: 30,
-    },
-  );
-
-  // const rev = await weeklyRevenue(
-  //   Number(session.userId),
-  //   session.role as string,
-  // );
-
-  const [
-    weeklyRev,
-    monthlyRev,
-    weeklyNetProf,
-    monthlyNetProf,
-    totalPackages,
-    netProfit,
-  ] = await Promise.all([
+  const [weeklyRev, monthlyRev, totalPackages, netProfit] = await Promise.all([
     weeklyRevenue(Number(session.userId), session.role as string),
     monthlyRevenue(Number(session.userId), session.role as string),
-    weeklyNetProfit(Number(session.userId), session.role as string),
-    monthlyNetProfit(Number(session.userId), session.role as string),
-    totalPackagesMonth(Number(session.userId), session.role as string),
-    getNetProfilt(Number(session.userId), session.role as string),
+    getTotalPackageCount(Number(session.userId), session.role as string),
+    getNetProfit(Number(session.userId), session.role as string),
   ]);
 
   return (
@@ -82,18 +48,18 @@ export default async function DashboardPage() {
             last: Number(monthlyRev?.lastMonthRevenue),
           }}
         >
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <Euro className="h-4 w-4 text-muted-foreground" />
         </DataCard>
 
         <DataCard
           data={{
-            title: 'Total Net Profit',
+            title: 'Net Profit',
             period: 'month',
-            current: Number(netProfit?.totalProfit),
-            last: Number(monthlyNetProf?.lastMonthNetProfit),
+            current: Number(netProfit?.thisMonth),
+            last: Number(netProfit?.lastMonth),
           }}
         >
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <Banknote className="h-4 w-4 text-muted-foreground" />
         </DataCard>
 
         <DataCard
@@ -109,13 +75,13 @@ export default async function DashboardPage() {
 
         <DataCard
           data={{
-            title: 'Weekly Net Profit',
-            period: 'week',
-            current: Number(weeklyNetProf?.thisWeekNetProfit),
-            last: Number(weeklyNetProf?.lastWeekNetProfit),
+            title: 'Packages Created',
+            period: 'month',
+            current: Number(totalPackages?.thisMonth),
+            last: Number(totalPackages?.lastMonth),
           }}
         >
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <Package className="h-4 w-4 text-muted-foreground" />
         </DataCard>
       </section>
       <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-7">

@@ -28,7 +28,7 @@ export default function DataCard({ data, children }: DataCardProps) {
         {children}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">€{data.current}</div>
+        <div className="text-2xl font-bold">{data.current}</div>
         <p className="text-xs capitalize text-muted-foreground">{progress}</p>
       </CardContent>
     </Card>

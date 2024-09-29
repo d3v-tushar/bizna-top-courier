@@ -13,7 +13,9 @@ export const address = pgTable('address', {
   postalCode: text('postal_code').notNull(),
   country: text('country').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 // Address Relations

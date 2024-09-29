@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
-import Invoice from '@/components/invoice/invoice-template';
 import { createCanvas } from 'canvas';
 import JsBarcode from 'jsbarcode';
 import db from '@/lib/database';
+import InvoiceDocument from '@/components/invoice/invoice-template';
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,12 +19,16 @@ export async function GET(request: NextRequest) {
 
     const invData = await db.query.packages.findFirst({
       columns: {
+        id: true,
         barcode: true,
+        note: true,
         discountAmount: true,
         totalAmount: true,
         createdAt: true,
       },
       with: {
+        sender: true,
+        receiver: true,
         billingAddress: {
           columns: {
             addressLine1: true,
@@ -80,7 +84,7 @@ export async function GET(request: NextRequest) {
     const barcodeBuffer = canvas.toBuffer('image/png');
 
     const buffer = await renderToBuffer(
-      <Invoice data={invData} barcode={barcodeBuffer} />,
+      <InvoiceDocument data={invData} barcode={barcodeBuffer} />,
     );
 
     return new NextResponse(buffer, {

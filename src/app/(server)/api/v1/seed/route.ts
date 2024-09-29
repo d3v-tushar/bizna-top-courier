@@ -1,5 +1,5 @@
 import db from '@/lib/database';
-import { admins, users } from '@/lib/database/schema';
+import { address, admins, hubs, users } from '@/lib/database/schema';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -18,13 +18,12 @@ export async function POST(request: Request) {
       const [adminUser] = await tx
         .insert(users)
         .values({
-          firstName: 'Root',
-          lastName: 'Admin',
+          firstName: 'Lemon',
+          lastName: 'Bhuiyan',
           phone: '01728712523',
-          imageUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent('Root')}+${encodeURIComponent('Admin')}`,
-          email: 'root@biznatop.com',
+          email: 'bhuiyan@biznatop.com',
           passwordHash:
-            '$2a$10$T4ZG9VTjr2dqGaBeossv..0VSzayD2fDLwZiy3RQ4vKXE1Jv6mzgK',
+            '$2y$10$VquMn/vBIfaA1oGIc2ngV.duzVTPVO/z1k4y.4NcKKZbh7ctdFZjW',
           role: 'ADMIN',
         })
         .returning({ id: users.id });
@@ -33,7 +32,24 @@ export async function POST(request: Request) {
         userId: adminUser.id,
       });
 
-      return adminUser;
+      const [hubAddress] = await tx
+        .insert(address)
+        .values({
+          addressLine1:
+            '104, Crescent Road (Ground Floor), Kathalbagan, Dhanmondi, Dhaka-1205',
+          city: 'Dhaka',
+          state: 'Dhaka Division',
+          postalCode: '1205',
+          country: 'Bangladesh',
+        })
+        .returning({ id: address.id });
+
+      await tx.insert(hubs).values({
+        name: 'Dhaka Central Hub',
+        addressId: hubAddress.id,
+        latitude: '23.745568068167014',
+        longitude: '90.38823329642517',
+      });
     });
 
     // Return the result

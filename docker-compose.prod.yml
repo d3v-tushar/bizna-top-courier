@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   biznatop-app:
     build:
@@ -39,10 +37,8 @@ services:
       biznatop-db:
         condition: service_healthy
     ports:
-      - "3000:8080"
+      - '3000:8080'
     restart: always
-    networks:
-      - bizna-secure
 
   biznatop-db:
     image: postgres:16-alpine
@@ -55,17 +51,11 @@ services:
     # No ports exposed to the host, only accessible within the Docker network
     # ports:
     #   - "5000:5432"
-    networks:
-      - bizna-secure
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U biznatop"]
+      test: ['CMD-SHELL', 'pg_isready -U biznatop']
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
   pgdata:
-
-networks:
-  bizna-secure:
-    driver: bridge

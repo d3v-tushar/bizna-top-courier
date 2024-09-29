@@ -17,6 +17,11 @@ const config = {
         '2xl': '1400px',
       },
     },
+    listStyleType: {
+      none: 'none',
+      disc: 'disc',
+      decimal: 'decimal',
+    },
     extend: {
       colors: {
         border: 'hsl(var(--border))',

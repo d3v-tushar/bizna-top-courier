@@ -1,0 +1,40 @@
+services:
+  # NextJS app
+  app:
+    image: node:20-alpine
+    container_name: bizna-app
+    # Remove the ports section to prevent direct access
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file:
+      - path: ./.env
+        required: true
+      - path: ./.env.local
+        required: false
+    command: sh -c "apk add --no-cache python3 make g++ cairo-dev jpeg-dev pango-dev giflib-dev && ./build.sh"
+    ports:
+      - '3000:8080'
+    restart: always
+    depends_on:
+      - db
+
+  # Postgres database
+  db:
+    container_name: bizna-db
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: biznatop
+      POSTGRES_PASSWORD: 001Bizna
+      POSTGRES_DB: biznadb
+    volumes:
+      - nextservices:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U biznatop -d biznadb']
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  nextservices:
