@@ -97,11 +97,15 @@ export function PackageLogForm() {
     }
   };
 
-  const handleBarcodeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    form.setValue('barcode', e.target.value);
-    if (e.target.value.length >= 10) {
-      form.handleSubmit(onSubmit)();
-    }
+  // const handleBarcodeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   form.setValue('barcode', e.target.value);
+  //   if (e.target.value.length >= 10) {
+  //     form.handleSubmit(onSubmit)();
+  //   }
+  // };
+
+  const handleBarcodeInput = () => {
+    form.handleSubmit(onSubmit);
   };
 
   console.log('log from state', form.formState.errors);
@@ -121,7 +125,7 @@ export function PackageLogForm() {
               <FormControl>
                 <Input
                   {...field}
-                  onChange={handleBarcodeInput}
+                  onKeyUp={() => handleBarcodeInput}
                   autoFocus
                   placeholder="BTXXXXXXXX"
                   className="h-8"

@@ -323,7 +323,7 @@ export const PackageUpdateSchema = PackageSchema.pick({
 // Form schema
 export const PackageLogSchema = z.object({
   id: z.number().optional(),
-  barcode: z.string().trim().min(12, 'Barcode is required'),
+  barcode: z.string().trim().min(10, 'Barcode is required'),
   status: z.enum(PACKAGE_STATUS),
   label: z.enum(PACKAGE_LABEL),
   createdAt: z.date().optional(),
