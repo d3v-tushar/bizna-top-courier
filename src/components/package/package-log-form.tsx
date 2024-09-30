@@ -77,6 +77,7 @@ export function PackageLogForm() {
 
     if (isExisting) {
       toast.warning('Package Already Exists in Records!');
+      form.reset({ barcode: '', status: data.status, label: data.label });
       return;
     }
 
