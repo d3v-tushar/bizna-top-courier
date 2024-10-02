@@ -20,7 +20,8 @@ export function PackageDeleteAction({
   approveAction,
   rejectAction,
 }: PackageDeleteActionProps) {
-  const [open, setOpen] = useState(false);
+  const [approveOpen, setApproveOpen] = useState(false);
+  const [rejectOpen, setRejectOpen] = useState(false);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,25 +32,36 @@ export function PackageDeleteAction({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onSelect={() => setOpen(true)}>
+        <DropdownMenuItem
+          onSelect={() => {
+            setRejectOpen(false);
+            setApproveOpen(true);
+          }}
+        >
           Approve
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => setOpen(true)}>
+        <DropdownMenuItem
+          onSelect={() => {
+            setApproveOpen(false);
+            setRejectOpen(true);
+          }}
+        >
           Reject
         </DropdownMenuItem>
-        <ConfirmationModal
-          open={open}
-          setOpen={setOpen}
-          actionLabel="Approve"
-          action={approveAction}
-        />
-        <ConfirmationModal
-          open={open}
-          setOpen={setOpen}
-          actionLabel="Reject"
-          action={rejectAction}
-        />
       </DropdownMenuContent>
+
+      <ConfirmationModal
+        open={approveOpen}
+        setOpen={setApproveOpen}
+        actionLabel="Approve"
+        action={approveAction}
+      />
+      <ConfirmationModal
+        open={rejectOpen}
+        setOpen={setRejectOpen}
+        actionLabel="Reject"
+        action={rejectAction}
+      />
     </DropdownMenu>
   );
 }

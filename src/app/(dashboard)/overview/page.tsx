@@ -12,8 +12,6 @@ import {
   getNetProfit,
 } from '@/lib/overview/overview.query';
 
-export const revalidate = 60; // 1 minutes
-
 export default async function DashboardPage() {
   const session = await verifySession();
   const weeklyRevenue = NextCache(getWeeklyRevenue, ['weekly-revenue'], {

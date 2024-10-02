@@ -8,17 +8,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 import { format } from 'date-fns';
-import { ConfirmationModal } from '@/components/shared/confirmation-modal';
 import db from '@/lib/database';
 import { deletePackage, requestDeletion } from '@/lib/package/package.actions';
 import { RefreshButton } from '@/components/shared/refresh-button';
@@ -99,23 +90,6 @@ export default async function PackageDeletion() {
           </div>
         )}
       </CardContent>
-      {/* <CardFooter className="flex w-full flex-col items-center justify-between md:flex-row">
-          <div className="text-sm text-muted-foreground">
-            Showing{' '}
-            <strong>
-              {(userList.page - 1) * userList.pageSize + 1}-
-              {Math.min(
-                userList.page * userList.pageSize,
-                userList.totalElements,
-              )}
-            </strong>{' '}
-            of <strong>{userList.totalElements}</strong>
-          </div>
-  
-          <div className="mt-4 flex items-center justify-end">
-            <Pagination page={userList.page} totalPages={userList.totalPages} />
-          </div>
-        </CardFooter> */}
     </Card>
   );
 }
